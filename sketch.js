@@ -9,14 +9,24 @@ let p1 = [450, 200]
 let p2 = [600,300]
 let r = 15
 
+//art
+let psling1 = [p0[0]-10, p0[1]]
+let psling2 = [p0[0]+5, p0[1]]
+
+//
 let pKYdist 
 let pKXdist
 let t = 0
+let l = 0
 let kurvp = []
 let shoot = false
 let shootp = []
 let hit = false
 let point = 0
+let targetxy = []
+let distRectShoot = []
+
+
 
 let target = {
     x: 750,
@@ -31,16 +41,24 @@ frameRate(60)
 background(200)
 
 fill('blue')
-circle(p0[0], p0[1], r)
+//circle(p0[0], p0[1], r)
 //circle(p2[0], p2[1], r)
 
 fill('red')
 //circle(p1[0], p1[1], r)
 
 fill('black')
-circle(pK[0], pK[1], 10)
+circle(pK[0], pK[1], 8)
 
+//art
+circle(psling1[0], psling1[1], 10)
+circle(psling2[0], psling2[1], 10)
 
+for(let l = 0; l < 1; l = l + 0.01){
+    circle(ConlerpABC(psling2, pK, psling1, l)[0], ConlerpABC(psling2, pK, psling1, l)[1], 1.5)
+}
+
+//
 
 
 if(mouseX <= pK[0] + r + 10 && mouseX >= pK[0] - r - 10 && pK[0] + Math.abs(mouseX - pK[0]) <= p0[0]){
@@ -108,11 +126,16 @@ setLineDash([10, 10])
 line(p0[0], p0[1], pguide[0], pguide[1])
 
 //point og mål
+targetxy = [target.x + target.w/2, target.y + target.h/2]
+distRectShoot = distance(shootp, targetxy)
+console.log(shootp)
+
 setLineDash([0, 0])
 fill('yellow')
 rect(target.x, target.y, target.w, target.h)
+console.log(distRectShoot)
 if(shootp.length > 1){
-    if(target.x < shootp[0]+15 && target.y < shootp[1] && target.y + target.h > shootp[1] && t<1.1){
+    if(distRectShoot < 15){
         if(hit === false){
             point++
             target.y = random(50, 350)
@@ -124,10 +147,9 @@ if(shootp.length > 1){
 
 
 
-
-console.log(hit)
 fill('black')
-text(point, 390, 50, 20, 20)
+textSize(20)
+text(point, 380, 50)
 
 }
 

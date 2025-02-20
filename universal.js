@@ -18,3 +18,4 @@ function distance(a, b){
     let d = sqrt(Math.abs((a[0] - b[0])**2 + (a[1] - b[1])**2))
     return(d)
 }
+

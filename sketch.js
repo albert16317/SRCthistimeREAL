@@ -2,20 +2,16 @@ function setup()
 {
 	createCanvas(800, 400);
 }
-function preload() {
-    img = loadImage(url);
-} 
+
 let pK = [110, 295]
 let p0 = [150, 275]
 let p1 = [450, 200]
 let p2 = [600,300]
 let r = 15
 
-//art
 let psling1 = [p0[0]-10, p0[1]]
 let psling2 = [p0[0]+10, p0[1]]
 
-//
 let pKYdist 
 let pKXdist
 let t = 0
@@ -54,7 +50,7 @@ fill('red')
 fill('black')
 circle(pK[0], pK[1], 8)
 
-//art
+//Slingshot
 circle(psling1[0], psling1[1], 10)
 circle(psling2[0], psling2[1], 10)
 
@@ -62,11 +58,10 @@ for(let l = 0; l < 1; l = l + 0.01){
     circle(ConlerpABC(psling2, pK, psling1, l)[0], ConlerpABC(psling2, pK, psling1, l)[1], 1.5)
 }
 
-//
 
-
-if(mouseX <= pK[0] + r + 10 && mouseX >= pK[0] - r - 10 && pK[0] + Math.abs(mouseX - pK[0]) <= p0[0]){
-    if(mouseY <= pK[1] + r + 10 && mouseY >= pK[1] - r - 10 && pK[1] + Math.abs(mouseY - pK[1]) >= p0[1]){
+//touchpK
+if(CheckMouseinpKandXborder()){
+    if(CheckMouseinpKandYborder()){
 
      if(mouseIsPressed){
         if(shoot === false){
@@ -81,22 +76,23 @@ if(mouseX <= pK[0] + r + 10 && mouseX >= pK[0] - r - 10 && pK[0] + Math.abs(mous
     }
 }
 }
+
+//border
 if(pK[0] >= p0[0]){
     pK[0] = p0[0] - 5
 
 }
-
 if(pK[1] <= p0[1]){
     pK[1] = p0[1] + 5
 
 }
 
+//shoot
 if(keyIsDown(13)){
     shoot = true
     hit = false
     miss = false
 }
-
 
 if(shoot === true){
     shootp = [ConlerpABC(p0, p1, p2, t)[0], ConlerpABC(p0, p1, p2, t)[1]]
@@ -112,28 +108,27 @@ if(shoot === true){
     }
 }
 
+//guideP
 function setLineDash(list) {
     drawingContext.setLineDash(list);
 }
-//guideP
-noFill()
-let pguide = [ConlerpABC(p0, p1, p2, 0.3)[0], ConlerpABC(p0, p1, p2, 0.2)[1]]
-//circle(pguide[0], pguide[1], 5)
 
+noFill()
+let pguide = [ConlerpABC(p0, p1, p2, 0.1)[0], ConlerpABC(p0, p1, p2, 0.1)[1]]
 
 setLineDash([10, 10])
+
 line(p0[0], p0[1], pguide[0], pguide[1])
 
 //point og mål
 targetxy = [target.x + target.w/2, target.y + target.h/2]
 distRectShoot = distance(shootp, targetxy)
-//console.log(shootp)
 
 setLineDash([0, 0])
 fill('yellow')
-//checkdist
 rect(target.x, target.y, target.w, target.h)
-//console.log(distRectShoot)
+
+//checkdist
 if(shootp.length > 1){
     if(distRectShoot < 20){
         if(hit === false){
@@ -146,7 +141,7 @@ if(shootp.length > 1){
 }
 
 if(shootp.length > 1){
-    if(shootp[0] > 800 && hit === false){
+    if(ifMissX()){
         if(miss === false){
             life--
             miss = true
@@ -155,21 +150,22 @@ if(shootp.length > 1){
 }
 
 if(shootp.length > 1){
-    if(shootp[1] > 400 && hit === false){
+    if(ifMissY()){
         if(miss === false){
             life--
             miss = true
         }
     }
 }
+
+//life
 console.log(life)
 
 fill('green')
 if(life <= 2){
     noFill()
 }
-    circle(110, 50, 20)
-
+circle(110, 50, 20)
 
 fill('green')
 if(life <= 1){
@@ -194,7 +190,27 @@ if(tabt === true){
     console.log('tabt')
 }
 
+//point
 fill('black')
 textSize(20)
 text(point, 380, 50)
 }
+
+
+
+function ifMissY() {
+    return shootp[1] > 400 && hit === false;
+}
+
+function ifMissX() {
+    return shootp[0] > 800 && hit === false;
+}
+
+function CheckMouseinpKandYborder() {
+    return mouseY <= pK[1] + r + 10 && mouseY >= pK[1] - r - 10 && pK[1] + Math.abs(mouseY - pK[1]) >= p0[1];
+}
+
+function CheckMouseinpKandXborder() {
+    return mouseX <= pK[0] + r + 10 && mouseX >= pK[0] - r - 10 && pK[0] + Math.abs(mouseX - pK[0]) <= p0[0];
+}
+

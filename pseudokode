@@ -1,0 +1,20 @@
+//touchpK
+Hvis musen er inden for cirklens(pK) grænser:
+    Hvis musen er trykket ned og skud ikke er affyret:
+        Opdater kuglens position til musens koordinater
+        Beregn afstand fra oprindelig position
+        Juster kontrolpunkterne p1 og p2 baseret på forskellen fra start:
+            p2 bevæger sig proportionalt længere væk
+            p1 justeres for at skabe en blød bue
+
+//shoot
+Hvis knappen enter(keycode13) er trykket
+    Sæt shoot = true
+    Hit og miss = false
+
+Hvis shoot er sand:
+    Tegner kuglen udfra kontrol punkter med funktion ConlerpABC(p0, p1, p2, t)
+        Opdatere "t" for at bevæge kuglen langs banen
+    Hvis kuglen når slutpunkt:
+        skud = false
+        Reset "t"
